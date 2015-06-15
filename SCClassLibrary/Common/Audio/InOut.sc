@@ -231,12 +231,12 @@ AbstractOut : UGen {
 Out : AbstractOut {
 	*ar { arg bus, channelsArray;
 		channelsArray = this.replaceZeroesWithSilence(channelsArray.asUGenInput(this).asArray);
-		this.multiNewList(['audio', bus] ++ channelsArray)
-		^0.0		// Out has no output
+		// Out has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['audio', bus] ++ channelsArray)
 	}
 	*kr { arg bus, channelsArray;
-		this.multiNewList(['control', bus] ++ channelsArray.asArray)
-		^0.0		// Out has no output
+		// Out has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['control', bus] ++ channelsArray.asArray)
 	}
 	*numFixedArgs { ^1 }
 	writesToBus { ^true }
@@ -250,12 +250,12 @@ OffsetOut : Out {
 LocalOut : AbstractOut {
 	*ar { arg channelsArray;
 		channelsArray = this.replaceZeroesWithSilence(channelsArray.asUGenInput(this).asArray);
-		this.multiNewList(['audio'] ++ channelsArray)
-		^0.0		// LocalOut has no output
+		// LocalOut has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['audio'] ++ channelsArray)
 	}
 	*kr { arg channelsArray;
-		this.multiNewList(['control'] ++ channelsArray.asArray)
-		^0.0		// LocalOut has no output
+		// LocalOut has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['control'] ++ channelsArray.asArray)
 	}
 	*numFixedArgs { ^0 }
 	writesToBus { ^false }
@@ -265,12 +265,12 @@ LocalOut : AbstractOut {
 XOut : AbstractOut {
 	*ar { arg bus, xfade, channelsArray;
 		channelsArray = this.replaceZeroesWithSilence(channelsArray.asUGenInput(this).asArray);
-		this.multiNewList(['audio', bus, xfade] ++ channelsArray)
-		^0.0		// Out has no output
+		// XOut has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['audio', bus, xfade] ++ channelsArray)
 	}
 	*kr { arg bus, xfade, channelsArray;
-		this.multiNewList(['control', bus, xfade] ++ channelsArray.asArray)
-		^0.0		// Out has no output
+		// XOut has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['control', bus, xfade] ++ channelsArray.asArray)
 	}
 	*numFixedArgs { ^2 }
 	checkInputs {
@@ -291,8 +291,8 @@ XOut : AbstractOut {
 SharedOut : AbstractOut {
 	*kr { arg bus, channelsArray;
 		warn("SharedOut is deprecated and will be removed. Please use Bus-getSynchronous instead.");
-		this.multiNewList(['control', bus] ++ channelsArray.asArray)
-		^0.0		// Out has no output
+		// SharedOut has no output, but keep the UGen in the graph
+		^0.0  <! this.multiNewList(['control', bus] ++ channelsArray.asArray)
 	}
 	*numFixedArgs { ^1 }
 	writesToBus { ^false }

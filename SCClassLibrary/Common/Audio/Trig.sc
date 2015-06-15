@@ -15,12 +15,12 @@ Trig : Trig1 {
 
 SendTrig : UGen {
 	*ar { arg in = 0.0, id = 0, value = 0.0;
-		this.multiNew('audio', in, id, value);
-		^0.0		// SendTrig has no output
+		// SendTrig has no output
+		^0.0  <! this.multiNew('audio', in, id, value);
 	}
 	*kr { arg in = 0.0, id = 0, value = 0.0;
-		this.multiNew('control', in, id, value);
-		^0.0		// SendTrig has no output
+		// SendTrig has no output
+		^0.0  <! this.multiNew('control', in, id, value);
 	}
  	checkInputs { ^this.checkSameRateAsFirstInput }
 	numOutputs { ^0 }
@@ -30,18 +30,18 @@ SendTrig : UGen {
 SendReply : SendTrig {
 	*kr { arg trig = 0.0, cmdName = '/reply', values, replyID = -1;
 		if(values.containsSeqColl.not) { values = values.bubble };
-		[trig, cmdName, values, replyID].flop.do { |args|
+		// SendReply has no output
+		^0.0  <! [trig, cmdName, values, replyID].flop.collect { |args|
 			this.new1('control', *args);
 		};
-		^0.0		// SendReply has no output
 	}
 
 	*ar { arg trig = 0.0, cmdName = '/reply', values, replyID = -1;
 		if(values.containsSeqColl.not) { values = values.bubble };
-		[trig, cmdName, values, replyID].flop.do { |args|
+		// SendReply has no output
+		^0.0  <! [trig, cmdName, values, replyID].flop.collect { |args|
 			this.new1('audio', *args);
 		};
-		^0.0		// SendReply has no output
 	}
 
 	*new1 { arg rate, trig = 0.0, cmdName = '/reply', values, replyID = -1;
